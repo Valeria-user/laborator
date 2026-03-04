@@ -1,11 +1,56 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Globalization;
 
 namespace laba_1
 {
-    public partial class MainWindow : Window
+    
+    /// Главное окно калькулятора
+        public partial class MainWindow : Window
+    {
+        private CalculatorEngine calculator = new CalculatorEngine();
+        private InputHandler inputHandler;
+
+        public MainWindow()
+        {
+            InitializeComponent();
+            inputHandler = new InputHandler(calculator, UpdateDisplay);
+
+            this.KeyDown += MainWindow_KeyDown;
+            this.PreviewKeyDown += MainWindow_PreviewKeyDown;
+            this.Loaded += (s, e) => this.Focus();
+        }
+
+        private void MainWindow_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Space)
+                e.Handled = true;
+        }
+
+        private void MainWindow_KeyDown(object sender, KeyEventArgs e)
+        {
+            inputHandler.HandleKey(e);
+            e.Handled = true;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Button button = (Button)sender;
+            inputHandler.HandleButton(button.Content.ToString());
+            this.Focus();
+        }
+
+        private void UpdateDisplay(string text)
+        {
+            DisplayTextBox.Text = text;
+        }
+    }
+
+    
+    /// Логика вычислений калькулятора
+    public class CalculatorEngine
     {
         private string currentInput = "";
         private string previousInput = "";
@@ -13,85 +58,44 @@ namespace laba_1
         private bool isNewInput = true;
         private bool operationPerformed = false;
 
-        public MainWindow()
-        {
-            InitializeComponent();
-        }
+        public string CurrentInput => currentInput;
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Button button = (Button)sender;
-            string content = button.Content.ToString();
 
-            if (IsDigitOrPoint(content))
-                HandleDigitOrPoint(content);
-            else if (IsOperation(content))
-                HandleOperation(content);
-            else
-                HandleSpecialFunction(content);
-        }
-
-        private bool IsDigitOrPoint(string content)
-        {
-            return "0123456789.,".Contains(content);
-        }
-
-        private bool IsOperation(string content)
-        {
-            return content == "+" || content == "−" || content == "×" || content == "÷" || content == "=";
-        }
-
-        private void HandleDigitOrPoint(string content)
+        /// Обработка ввода цифр и десятичной точки
+        public void ProcessDigitOrPoint(string content)
         {
             string decimalSeparator = NumberFormatInfo.CurrentInfo.NumberDecimalSeparator;
 
-            if (content == "." || content == ",")
+            if (content == ".")
                 content = decimalSeparator;
 
             if (isNewInput)
             {
-                // При новом вводе обрабатываем начальные нули
                 if (content == "0")
-                {
-                    currentInput = "0"; // Один ноль
-                }
+                    currentInput = "0";
                 else if (content == decimalSeparator)
-                {
                     currentInput = "0" + decimalSeparator;
-                }
                 else
-                {
                     currentInput = content;
-                }
+
                 isNewInput = false;
             }
             else
             {
-                // Проверка на множественные нули в начале числа
                 if (currentInput == "0" && content == "0")
-                {
-                    // Игнорируем второй ноль
                     return;
-                }
                 else if (currentInput == "0" && content != decimalSeparator && content != "0")
-                {
-                    // Заменяем ноль на другую цифру
                     currentInput = content;
-                }
                 else if (content == decimalSeparator && !currentInput.Contains(decimalSeparator))
-                {
                     currentInput += content;
-                }
                 else if (content != decimalSeparator && currentInput.Length < 15)
-                {
                     currentInput += content;
-                }
             }
-
-            UpdateDisplay(currentInput);
         }
 
-        private void HandleOperation(string content)
+
+        /// Обработка математических операций
+        public void ProcessOperation(string content)
         {
             if (content == "=")
             {
@@ -119,13 +123,31 @@ namespace laba_1
             }
         }
 
-        private void HandleSpecialFunction(string content)
+
+        /// Обработка специальных функций (C, ±, %)
+        public void ProcessSpecialFunction(string content)
         {
             switch (content)
             {
                 case "C": ClearAll(); break;
                 case "±": ToggleSign(); break;
                 case "%": CalculatePercent(); break;
+            }
+        }
+
+
+        /// Обработка клавиши Backspace
+        public void ProcessBackspace()
+        {
+            if (!string.IsNullOrEmpty(currentInput) && currentInput != "0")
+            {
+                if (currentInput.Length > 1)
+                    currentInput = currentInput.Substring(0, currentInput.Length - 1);
+                else
+                {
+                    currentInput = "0";
+                    isNewInput = true;
+                }
             }
         }
 
@@ -176,7 +198,6 @@ namespace laba_1
 
                 currentInput = result.ToString(provider);
                 previousInput = "";
-                UpdateDisplay(currentInput);
             }
             catch
             {
@@ -192,7 +213,6 @@ namespace laba_1
             {
                 currentInput = currentInput.StartsWith("-") ?
                               currentInput.Substring(1) : "-" + currentInput;
-                UpdateDisplay(currentInput);
             }
         }
 
@@ -219,8 +239,6 @@ namespace laba_1
                         double num = double.Parse(currentInput, provider) / 100;
                         currentInput = num.ToString(provider);
                     }
-
-                    UpdateDisplay(currentInput);
                 }
                 catch
                 {
@@ -237,11 +255,14 @@ namespace laba_1
             currentOperation = "";
             isNewInput = true;
             operationPerformed = false;
-            UpdateDisplay("0");
         }
 
-        private void UpdateDisplay(string text)
+
+        /// Возвращает отформатированное число для отображения
+        public string GetFormattedDisplay()
         {
+            string text = string.IsNullOrEmpty(currentInput) ? "0" : currentInput;
+
             if (text.Length > 15)
             {
                 try
@@ -261,7 +282,128 @@ namespace laba_1
                 }
             }
 
-            DisplayTextBox.Text = text;
+            return text;
+        }
+    }
+
+    
+    /// Обработчик ввода с клавиатуры и кнопок
+    public class InputHandler
+    {
+        private CalculatorEngine calculator;
+        private Action<string> updateDisplayCallback;
+
+        public InputHandler(CalculatorEngine calculator, Action<string> updateDisplayCallback)
+        {
+            this.calculator = calculator;
+            this.updateDisplayCallback = updateDisplayCallback;
+        }
+
+
+        /// Обработка нажатия клавиши
+        public void HandleKey(KeyEventArgs e)
+        {
+            string keyContent = GetKeyContent(e);
+
+            if (!string.IsNullOrEmpty(keyContent))
+            {
+                ProcessInput(keyContent);
+            }
+            else if (IsSpecialKey(e.Key))
+            {
+                HandleSpecialKey(e.Key);
+            }
+        }
+
+
+        /// Обработка нажатия кнопки мыши
+        public void HandleButton(string content)
+        {
+            ProcessInput(content);
+        }
+
+        private void ProcessInput(string content)
+        {
+            if (IsDigitOrPoint(content))
+            {
+                calculator.ProcessDigitOrPoint(content);
+                UpdateDisplay();
+            }
+            else if (IsOperation(content))
+            {
+                calculator.ProcessOperation(content);
+                UpdateDisplay();
+            }
+            else
+            {
+                calculator.ProcessSpecialFunction(content);
+                UpdateDisplay();
+            }
+        }
+
+        private string GetKeyContent(KeyEventArgs e)
+        {
+            if (e.Key >= Key.D0 && e.Key <= Key.D9)
+                return (e.Key - Key.D0).ToString();
+
+            if (e.Key >= Key.NumPad0 && e.Key <= Key.NumPad9)
+                return (e.Key - Key.NumPad0).ToString();
+
+            if (e.Key == Key.Decimal || e.Key == Key.OemPeriod || e.Key == Key.OemComma)
+                return ".";
+
+            if (e.Key == Key.Add || (e.Key == Key.OemPlus && Keyboard.Modifiers == ModifierKeys.Shift))
+                return "+";
+
+            if (e.Key == Key.Subtract || e.Key == Key.OemMinus)
+                return "−";
+
+            if (e.Key == Key.Multiply)
+                return "×";
+
+            if (e.Key == Key.Divide)
+                return "÷";
+
+            if (e.Key == Key.Enter || e.Key == Key.Return)
+                return "=";
+
+            return null;
+        }
+
+        private bool IsDigitOrPoint(string content)
+        {
+            return "0123456789.,".Contains(content);
+        }
+
+        private bool IsOperation(string content)
+        {
+            return content == "+" || content == "−" || content == "×" || content == "÷" || content == "=";
+        }
+
+        private bool IsSpecialKey(Key key)
+        {
+            return key == Key.Escape || key == Key.Back || key == Key.Delete;
+        }
+
+        private void HandleSpecialKey(Key key)
+        {
+            switch (key)
+            {
+                case Key.Escape:
+                    calculator.ProcessSpecialFunction("C");
+                    UpdateDisplay();
+                    break;
+                case Key.Back:
+                case Key.Delete:
+                    calculator.ProcessBackspace();
+                    UpdateDisplay();
+                    break;
+            }
+        }
+
+        private void UpdateDisplay()
+        {
+            updateDisplayCallback?.Invoke(calculator.GetFormattedDisplay());
         }
     }
 }

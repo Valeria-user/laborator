@@ -43,26 +43,49 @@ namespace laba_1
 
         private void HandleDigitOrPoint(string content)
         {
-            // Определяем десятичный разделитель для текущей культуры (точка или запятая)
             string decimalSeparator = NumberFormatInfo.CurrentInfo.NumberDecimalSeparator;
 
-            // Преобразуем введенную точку/запятую в правильный разделитель
             if (content == "." || content == ",")
                 content = decimalSeparator;
 
-            // Новое число после операции
             if (isNewInput)
             {
-                currentInput = (content == decimalSeparator) ? "0" + decimalSeparator : content;
+                // При новом вводе обрабатываем начальные нули
+                if (content == "0")
+                {
+                    currentInput = "0"; // Один ноль
+                }
+                else if (content == decimalSeparator)
+                {
+                    currentInput = "0" + decimalSeparator;
+                }
+                else
+                {
+                    currentInput = content;
+                }
                 isNewInput = false;
             }
             else
             {
-                // Запрещаем второй десятичный разделитель
-                if (content == decimalSeparator && !currentInput.Contains(decimalSeparator))
+                // Проверка на множественные нули в начале числа
+                if (currentInput == "0" && content == "0")
+                {
+                    // Игнорируем второй ноль
+                    return;
+                }
+                else if (currentInput == "0" && content != decimalSeparator && content != "0")
+                {
+                    // Заменяем ноль на другую цифру
+                    currentInput = content;
+                }
+                else if (content == decimalSeparator && !currentInput.Contains(decimalSeparator))
+                {
                     currentInput += content;
+                }
                 else if (content != decimalSeparator && currentInput.Length < 15)
+                {
                     currentInput += content;
+                }
             }
 
             UpdateDisplay(currentInput);
@@ -124,7 +147,6 @@ namespace laba_1
 
             try
             {
-                // Используем правильный десятичный разделитель для парсинга
                 NumberFormatInfo provider = new NumberFormatInfo
                 {
                     NumberDecimalSeparator = NumberFormatInfo.CurrentInfo.NumberDecimalSeparator,
@@ -141,7 +163,6 @@ namespace laba_1
                     case "-": result = num1 - num2; break;
                     case "*": result = num1 * num2; break;
                     case "/":
-                        // Проверка деления на ноль
                         if (num2 == 0)
                         {
                             MessageBox.Show("Деление на ноль невозможно!", "Ошибка",
@@ -167,7 +188,6 @@ namespace laba_1
 
         private void ToggleSign()
         {
-            // Смена знака числа (+/-)
             if (!string.IsNullOrEmpty(currentInput) && currentInput != "0")
             {
                 currentInput = currentInput.StartsWith("-") ?
@@ -190,14 +210,12 @@ namespace laba_1
 
                     if (!string.IsNullOrEmpty(previousInput))
                     {
-                        // Процент от предыдущего числа
                         double num1 = double.Parse(previousInput, provider);
                         double num2 = double.Parse(currentInput, provider);
                         currentInput = ((num1 * num2) / 100).ToString(provider);
                     }
                     else
                     {
-                        // Процент как доля от числа
                         double num = double.Parse(currentInput, provider) / 100;
                         currentInput = num.ToString(provider);
                     }
@@ -224,7 +242,6 @@ namespace laba_1
 
         private void UpdateDisplay(string text)
         {
-            // Научная нотация для очень больших чисел
             if (text.Length > 15)
             {
                 try

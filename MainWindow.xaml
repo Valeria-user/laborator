@@ -1,18 +1,73 @@
 ﻿<Window x:Class="laba_1.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:laba_1"
-        mc:Ignorable="d"
-        Title="Калькулятор" Height="574" Width="469">
-    <Grid Margin="0,10,0,0">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="0*"/>
-            <ColumnDefinition/>
-        </Grid.ColumnDefinitions>
-        
+        Title="Калькулятор" Height="500" Width="350"
+        WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize">
 
-       
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Дисплей -->
+        <Border Grid.Row="0" Grid.ColumnSpan="4" 
+                Background="#F0F0F0" 
+                CornerRadius="5" 
+                Margin="0,0,0,10">
+            <TextBox x:Name="DisplayTextBox" 
+                     Height="70" 
+                     Background="Transparent"
+                     BorderThickness="0"
+                     FontSize="32" 
+                     FontWeight="Light"
+                     TextAlignment="Right" 
+                     VerticalContentAlignment="Center"
+                     Padding="10"
+                     Text="0" 
+                     IsReadOnly="True"/>
+        </Border>
+
+        <!-- Ряд 1: Очистка и операции -->
+        <Button Grid.Row="1" Grid.Column="0" Content="C" Margin="3" FontSize="20" FontWeight="Bold" Click="Button_Click"/>
+        <Button Grid.Row="1" Grid.Column="1" Content="±" Margin="3" FontSize="20" Click="Button_Click"/>
+        <Button Grid.Row="1" Grid.Column="2" Content="%" Margin="3" FontSize="20" Click="Button_Click"/>
+        <Button Grid.Row="1" Grid.Column="3" Content="÷" Margin="3" FontSize="24" FontWeight="Bold" Click="Button_Click"/>
+
+        <!-- Ряд 2: Цифры 7-9 и × -->
+        <Button Grid.Row="2" Grid.Column="0" Content="7" Margin="3" FontSize="22" Click="Button_Click"/>
+        <Button Grid.Row="2" Grid.Column="1" Content="8" Margin="3" FontSize="22" Click="Button_Click"/>
+        <Button Grid.Row="2" Grid.Column="2" Content="9" Margin="3" FontSize="22" Click="Button_Click"/>
+        <Button Grid.Row="2" Grid.Column="3" Content="×" Margin="3" FontSize="24" FontWeight="Bold" Click="Button_Click"/>
+
+        <!-- Ряд 3: Цифры 4-6 и − -->
+        <Button Grid.Row="3" Grid.Column="0" Content="4" Margin="3" FontSize="22" Click="Button_Click"/>
+        <Button Grid.Row="3" Grid.Column="1" Content="5" Margin="3" FontSize="22" Click="Button_Click"/>
+        <Button Grid.Row="3" Grid.Column="2" Content="6" Margin="3" FontSize="22" Click="Button_Click"/>
+        <Button Grid.Row="3" Grid.Column="3" Content="−" Margin="3" FontSize="24" FontWeight="Bold" Click="Button_Click"/>
+
+        <!-- Ряд 4: Цифры 1-3 и + -->
+        <Button Grid.Row="4" Grid.Column="0" Content="1" Margin="3" FontSize="22" Click="Button_Click"/>
+        <Button Grid.Row="4" Grid.Column="1" Content="2" Margin="3" FontSize="22" Click="Button_Click"/>
+        <Button Grid.Row="4" Grid.Column="2" Content="3" Margin="3" FontSize="22" Click="Button_Click"/>
+        <Button Grid.Row="4" Grid.Column="3" Content="+" Margin="3" FontSize="24" FontWeight="Bold" Click="Button_Click"/>
+
+        <!-- Ряд 5: Расширенная кнопка 0, точка и равно -->
+        <Button Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" 
+                Content="0" Margin="3" FontSize="22" Click="Button_Click"/>
+        <Button Grid.Row="5" Grid.Column="2" Content="." Margin="3" FontSize="24" Click="Button_Click"/>
+        <Button Grid.Row="5" Grid.Column="3" Content="=" Margin="3" FontSize="24" FontWeight="Bold" Click="Button_Click"/>
     </Grid>
 </Window>

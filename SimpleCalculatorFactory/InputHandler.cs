@@ -1,13 +1,8 @@
 ﻿using System;
 using System.Windows.Input;
-using SimpleCalculatorFactory;
 
-
-namespace laba_1
+namespace SimpleCalculatorFactory  // ВАЖНО: namespace должен быть SimpleCalculatorFactory
 {
-    /// <summary>
-    /// Обработчик ввода с клавиатуры и кнопок
-    /// </summary>
     public class InputHandler
     {
         private CalculatorEngine calculator;
@@ -19,9 +14,6 @@ namespace laba_1
             this.updateDisplayCallback = updateDisplayCallback;
         }
 
-        /// <summary>
-        /// Обработка нажатия клавиши
-        /// </summary>
         public void HandleKey(KeyEventArgs e)
         {
             string keyContent = GetKeyContent(e);
@@ -36,9 +28,6 @@ namespace laba_1
             }
         }
 
-        /// <summary>
-        /// Обработка нажатия кнопки мыши
-        /// </summary>
         public void HandleButton(string content)
         {
             ProcessInput(content);

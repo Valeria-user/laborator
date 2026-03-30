@@ -56,9 +56,10 @@
                      IsReadOnly="True"/>
         </Border>
 
-        <!-- Сетка для кнопок (ИЗНАЧАЛЬНО ПУСТАЯ) -->
+        <!-- Сетка для кнопок -->
         <Grid x:Name="ButtonsGrid" Grid.Row="2">
             <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>

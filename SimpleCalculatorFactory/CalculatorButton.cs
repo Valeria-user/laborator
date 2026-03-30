@@ -112,7 +112,6 @@ namespace SimpleCalculatorFactory
                 new SolidColorBrush(Color.FromRgb(204, 204, 204));
             button.Margin = new Thickness(3);
         }
-
         public override void HandleClick(CalculatorEngine engine, MainWindow window)
         {
             window.ProcessInput(Content);

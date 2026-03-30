@@ -4,7 +4,8 @@
         Title="Калькулятор" Height="650" Width="380"
         WindowStartupLocation="CenterScreen"
         ResizeMode="NoResize"
-        FontFamily="Segoe UI">
+        FontFamily="Segoe UI"
+        Background="#F0F0F0">
 
     <Grid x:Name="MainGrid" Margin="15">
         <Grid.RowDefinitions>
@@ -13,18 +14,16 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- Меню выбора в правом верхнем углу -->
+        <!-- Меню выбора режима -->
         <StackPanel Grid.Row="0" Orientation="Horizontal" 
                     HorizontalAlignment="Right" 
                     VerticalAlignment="Center"
                     Margin="0,0,0,10">
-
             <TextBlock Text="Режим:" 
                        VerticalAlignment="Center" 
                        Margin="0,0,8,0" 
                        FontSize="13"
-                       Foreground="#555555"/>
-
+                       Foreground="#333333"/>
             <ComboBox x:Name="ModeSelector" 
                       Width="110" 
                       Height="28"
@@ -57,7 +56,7 @@
                      IsReadOnly="True"/>
         </Border>
 
-        <!-- Сетка для кнопок -->
+        <!-- Сетка для кнопок (ИЗНАЧАЛЬНО ПУСТАЯ) -->
         <Grid x:Name="ButtonsGrid" Grid.Row="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="*"/>
@@ -68,162 +67,13 @@
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-
-            <!-- === СТАНДАРТНЫЕ КНОПКИ === -->
-
-            <!-- Ряд 1: C, ±, %, ÷ -->
-            <Button x:Name="BtnC" Grid.Row="1" Grid.Column="0" 
-                    Content="C" Margin="3" FontSize="20" FontWeight="Bold"
-                    Background="#FFE5E5E5" BorderBrush="#CCCCCC"/>
-
-            <Button x:Name="BtnPlusMinus" Grid.Row="1" Grid.Column="1" 
-                    Content="±" Margin="3" FontSize="20"
-                    Background="#FFE5E5E5" BorderBrush="#CCCCCC"/>
-
-            <Button x:Name="BtnPercent" Grid.Row="1" Grid.Column="2" 
-                    Content="%" Margin="3" FontSize="20"
-                    Background="#FFE5E5E5" BorderBrush="#CCCCCC"/>
-
-            <Button x:Name="BtnDivide" Grid.Row="1" Grid.Column="3" 
-                    Content="÷" Margin="3" FontSize="24" FontWeight="Bold"
-                    Background="#FFFFA500" Foreground="White" BorderBrush="#FFCC8800"/>
-
-            <!-- Ряд 2: 7, 8, 9, × -->
-            <Button x:Name="Btn7" Grid.Row="2" Grid.Column="0" 
-                    Content="7" Margin="3" FontSize="22"
-                    Background="White" BorderBrush="#CCCCCC"/>
-
-            <Button x:Name="Btn8" Grid.Row="2" Grid.Column="1" 
-                    Content="8" Margin="3" FontSize="22"
-                    Background="White" BorderBrush="#CCCCCC"/>
-
-            <Button x:Name="Btn9" Grid.Row="2" Grid.Column="2" 
-                    Content="9" Margin="3" FontSize="22"
-                    Background="White" BorderBrush="#CCCCCC"/>
-
-            <Button x:Name="BtnMultiply" Grid.Row="2" Grid.Column="3" 
-                    Content="×" Margin="3" FontSize="24" FontWeight="Bold"
-                    Background="#FFFFA500" Foreground="White" BorderBrush="#FFCC8800"/>
-
-            <!-- Ряд 3: 4, 5, 6, − -->
-            <Button x:Name="Btn4" Grid.Row="3" Grid.Column="0" 
-                    Content="4" Margin="3" FontSize="22"
-                    Background="White" BorderBrush="#CCCCCC"/>
-
-            <Button x:Name="Btn5" Grid.Row="3" Grid.Column="1" 
-                    Content="5" Margin="3" FontSize="22"
-                    Background="White" BorderBrush="#CCCCCC"/>
-
-            <Button x:Name="Btn6" Grid.Row="3" Grid.Column="2" 
-                    Content="6" Margin="3" FontSize="22"
-                    Background="White" BorderBrush="#CCCCCC"/>
-
-            <Button x:Name="BtnSubtract" Grid.Row="3" Grid.Column="3" 
-                    Content="−" Margin="3" FontSize="28" FontWeight="Bold"
-                    Background="#FFFFA500" Foreground="White" BorderBrush="#FFCC8800"/>
-
-            <!-- Ряд 4: 1, 2, 3, + -->
-            <Button x:Name="Btn1" Grid.Row="4" Grid.Column="0" 
-                    Content="1" Margin="3" FontSize="22"
-                    Background="White" BorderBrush="#CCCCCC"/>
-
-            <Button x:Name="Btn2" Grid.Row="4" Grid.Column="1" 
-                    Content="2" Margin="3" FontSize="22"
-                    Background="White" BorderBrush="#CCCCCC"/>
-
-            <Button x:Name="Btn3" Grid.Row="4" Grid.Column="2" 
-                    Content="3" Margin="3" FontSize="22"
-                    Background="White" BorderBrush="#CCCCCC"/>
-
-            <Button x:Name="BtnAdd" Grid.Row="4" Grid.Column="3" 
-                    Content="+" Margin="3" FontSize="28" FontWeight="Bold"
-                    Background="#FFFFA500" Foreground="White" BorderBrush="#FFCC8800"/>
-
-            <!-- Ряд 5: 0 (широкая), ., = -->
-            <Button x:Name="Btn0" Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" 
-                    Content="0" Margin="3" FontSize="22"
-                    Background="White" BorderBrush="#CCCCCC"
-                    HorizontalContentAlignment="Center"/>
-
-            <Button x:Name="BtnPoint" Grid.Row="5" Grid.Column="2" 
-                    Content="." Margin="3" FontSize="26"
-                    Background="White" BorderBrush="#CCCCCC"/>
-
-            <Button x:Name="BtnEquals" Grid.Row="5" Grid.Column="3" 
-                    Content="=" Margin="3" FontSize="26" FontWeight="Bold"
-                    Background="#FFFFA500" Foreground="White" BorderBrush="#FFCC8800"/>
-
-            <!-- === НАУЧНЫЕ КНОПКИ (по умолчанию скрыты) === -->
-
-            <!-- Ряд 0: Первая строка научных функций -->
-            <Button x:Name="BtnSin" Grid.Row="0" Grid.Column="0" 
-                    Content="sin" Margin="3" FontSize="16" 
-                    Background="#FFE0E0E0" BorderBrush="#CCCCCC"
-                    Visibility="Collapsed"/>
-
-            <Button x:Name="BtnCos" Grid.Row="0" Grid.Column="1" 
-                    Content="cos" Margin="3" FontSize="16"
-                    Background="#FFE0E0E0" BorderBrush="#CCCCCC"
-                    Visibility="Collapsed"/>
-
-            <Button x:Name="BtnTan" Grid.Row="0" Grid.Column="2" 
-                    Content="tan" Margin="3" FontSize="16"
-                    Background="#FFE0E0E0" BorderBrush="#CCCCCC"
-                    Visibility="Collapsed"/>
-
-            <Button x:Name="BtnLn" Grid.Row="0" Grid.Column="3" 
-                    Content="ln" Margin="3" FontSize="16"
-                    Background="#FFE0E0E0" BorderBrush="#CCCCCC"
-                    Visibility="Collapsed"/>
-
-            <!-- Ряд 1: Вторая строка научных функций -->
-            <Button x:Name="BtnSqrt" Grid.Row="1" Grid.Column="0" 
-                    Content="√" Margin="3" FontSize="20" FontWeight="Bold"
-                    Background="#FFE0E0E0" BorderBrush="#CCCCCC"
-                    Visibility="Collapsed"/>
-
-            <Button x:Name="BtnPower" Grid.Row="1" Grid.Column="1" 
-                    Content="x²" Margin="3" FontSize="18"
-                    Background="#FFE0E0E0" BorderBrush="#CCCCCC"
-                    Visibility="Collapsed"/>
-
-            <Button x:Name="BtnExp" Grid.Row="1" Grid.Column="2" 
-                    Content="eˣ" Margin="3" FontSize="18"
-                    Background="#FFE0E0E0" BorderBrush="#CCCCCC"
-                    Visibility="Collapsed"/>
-
-            <Button x:Name="BtnLog" Grid.Row="1" Grid.Column="3" 
-                    Content="log" Margin="3" FontSize="16"
-                    Background="#FFE0E0E0" BorderBrush="#CCCCCC"
-                    Visibility="Collapsed"/>
-
-            <!-- Кнопки памяти (можно добавить позже) -->
-            <Button x:Name="BtnMc" Grid.Row="6" Grid.Column="0" 
-                    Content="MC" Margin="3" FontSize="14"
-                    Background="#FFD0D0D0" BorderBrush="#CCCCCC"
-                    Visibility="Collapsed"/>
-
-            <Button x:Name="BtnMr" Grid.Row="6" Grid.Column="1" 
-                    Content="MR" Margin="3" FontSize="14"
-                    Background="#FFD0D0D0" BorderBrush="#CCCCCC"
-                    Visibility="Collapsed"/>
-
-            <Button x:Name="BtnMPlus" Grid.Row="6" Grid.Column="2" 
-                    Content="M+" Margin="3" FontSize="14"
-                    Background="#FFD0D0D0" BorderBrush="#CCCCCC"
-                    Visibility="Collapsed"/>
-
-            <Button x:Name="BtnMMinus" Grid.Row="6" Grid.Column="3" 
-                    Content="M-" Margin="3" FontSize="14"
-                    Background="#FFD0D0D0" BorderBrush="#CCCCCC"
-                    Visibility="Collapsed"/>
+            <!-- Кнопки будут созданы фабрикой в коде -->
         </Grid>
     </Grid>
 </Window>

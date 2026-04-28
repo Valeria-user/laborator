@@ -104,9 +104,9 @@ namespace SimpleCalculatorFactory
             }
         }
 
-        /// <summary>
+
         /// Выполнение научных функций
-        /// </summary>
+
         public void ExecuteScientificFunction(string function)
         {
             if (string.IsNullOrEmpty(currentInput) || currentInput == "0")
@@ -168,9 +168,9 @@ namespace SimpleCalculatorFactory
             }
         }
 
-        /// <summary>
+
         /// Обработка операций с памятью
-        /// </summary>
+
         public void HandleMemoryOperation(string operation)
         {
             try

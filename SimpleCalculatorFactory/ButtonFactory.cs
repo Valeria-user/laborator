@@ -2,14 +2,13 @@
 
 namespace SimpleCalculatorFactory
 {
-    /// <summary>
+   
     /// Фабрика для создания определений кнопок
-    /// </summary>
+
     public class ButtonFactory
     {
-        /// <summary>
+       
         /// Возвращает список определений для стандартного режима
-        /// </summary>
         public List<CalculatorButton> GetStandardButtons()
         {
             var buttons = new List<CalculatorButton>();
@@ -48,9 +47,7 @@ namespace SimpleCalculatorFactory
             return buttons;
         }
 
-        /// <summary>
         /// Возвращает список определений для научного режима
-        /// </summary>
         public List<CalculatorButton> GetScientificButtons()
         {
             var buttons = new List<CalculatorButton>();

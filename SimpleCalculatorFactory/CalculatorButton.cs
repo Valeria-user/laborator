@@ -4,9 +4,9 @@ using System.Windows.Media;
 
 namespace SimpleCalculatorFactory
 {
-    /// <summary>
+
     /// Базовый класс для всех кнопок калькулятора
-    /// </summary>
+
     public abstract class CalculatorButton
     {
         public string Name { get; protected set; }
@@ -21,9 +21,9 @@ namespace SimpleCalculatorFactory
         public abstract void HandleClick(CalculatorEngine engine, MainWindow window);
     }
 
-    /// <summary>
+
     /// Кнопка с цифрой
-    /// </summary>
+
     public class NumberButton : CalculatorButton
     {
         public NumberButton(string name, string content, int row, int col, bool isScientific = false)
@@ -50,9 +50,9 @@ namespace SimpleCalculatorFactory
         }
     }
 
-    /// <summary>
+
     /// Кнопка операции (+, -, ×, ÷)
-    /// </summary>
+
     public class OperationButton : CalculatorButton
     {
         public OperationButton(string name, string content, int row, int col, bool isScientific = false)
@@ -81,9 +81,9 @@ namespace SimpleCalculatorFactory
         }
     }
 
-    /// <summary>
+
     /// Кнопка действия (C, ±, %, =)
-    /// </summary>
+
     public class ActionButton : CalculatorButton
     {
         public ActionButton(string name, string content, int row, int col, int colSpan = 1, bool isScientific = false)
@@ -118,9 +118,9 @@ namespace SimpleCalculatorFactory
         }
     }
 
-    /// <summary>
+
     /// Научная кнопка (sin, cos, tan, и т.д.)
-    /// </summary>
+
     public class ScientificButton : CalculatorButton
     {
         public ScientificButton(string name, string content, int row, int col, bool isScientific = true)
@@ -149,9 +149,9 @@ namespace SimpleCalculatorFactory
         }
     }
 
-    /// <summary>
+
     /// Кнопка памяти
-    /// </summary>
+
     public class MemoryButton : CalculatorButton
     {
         public MemoryButton(string name, string content, int row, int col, bool isScientific = true)
